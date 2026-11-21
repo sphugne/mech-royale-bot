@@ -10,4 +10,10 @@ The first experiment tests whether starting toward the next safe zone based on t
 
 `cover_bot.py` uses the arena geometry to pick targets with a clear firing line and looks for nearby cover while reloading. It scored 1.90 in practice.
 
-`evasion_bot.py` tests irregular strafing and movement in response to incoming projectiles and laser charges. `mechfight.py` handles the game protocol, and `Dockerfile` launches the evasion variant for the scorer.
+`evasion_bot.py` tests irregular strafing and movement in response to incoming projectiles and laser charges. It scored 1.96 in practice.
+
+`isolation_bot.py` commits to exposed targets, seeks cover against multiple opponents, and closes into lightning range in isolated fights. `mechfight.py` handles the game protocol, and `Dockerfile` launches the isolation variant for the scorer.
+
+The isolation variant uses the same urgency check for zone travel and dodging. A dodge must preserve urgent zone progress and avoid increasing predicted enemy exposure. During a gun reload, the bot keeps its planned shelter move unless lightning is ready and the target is already in range.
+
+The corrected bot passed all 300 observations in the official conformance checker locally and in Docker. Its practice score is pending.

@@ -15,6 +15,9 @@ class Bot(CoverBot):
         self.strafe_interval = self.rng.uniform(0.65, 1.65)
         self.weapons = hello["config"]["weapons"]
 
+    def dodge_allowed(self, obs, base, move, base_end, end):
+        return True
+
     def act(self, obs):
         previous_turn = self.last_turn
         action = super().act(obs)
@@ -110,7 +113,8 @@ class Bot(CoverBot):
                         cost += weight * max(0, 1 - miss / max(radius + 2, height / 2))
             return cost
 
-        best_risk = risk(trajectory(base, walk))
+        base_points = trajectory(base, walk)
+        best_risk = risk(base_points)
         if best_risk == 0:
             return action
         chosen, use_boost = base, False
@@ -127,7 +131,9 @@ class Bot(CoverBot):
                 if rushing and next_distance > zone["next_radius"] and math.dist(end, zone["next_center"]) > next_distance:
                     continue
                 cost = risk(points) + 0.12 * math.dist(move, base) + 0.12 * boosted
-                if cost < best_risk and not self.arena.blocked((x, y, z + 1), (*end, z + 1)):
+                if (cost < best_risk
+                        and not self.arena.blocked((x, y, z + 1), (*end, z + 1))
+                        and self.dodge_allowed(obs, base, move, base_points[-1], end)):
                     chosen, use_boost, best_risk = move, boosted, cost
 
         action["move"] = chosen

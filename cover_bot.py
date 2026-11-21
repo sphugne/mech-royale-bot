@@ -101,6 +101,7 @@ class Arena:
 
 class Bot(CombatBot):
     name = "cover-py"
+    protect_zone_progress = False
 
     def __init__(self, hello):
         super().__init__(hello)
@@ -119,6 +120,8 @@ class Bot(CombatBot):
 
     def movement(self, obs, target):
         move = super().movement(obs, target)
+        if self.protect_zone_progress and self.zone_urgent(obs):
+            return move
         me, zone = obs["self"], obs["zone"]
         gun = me["weapons"][0]
         if not (target and gun.get("reload", 0) > 0 and me["grounded"] and me["in_zone"]):

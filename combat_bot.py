@@ -36,17 +36,20 @@ class Bot:
         self.detour_until = 0.0
         self.detour = (0.0, 0.0)
 
+    @staticmethod
+    def zone_urgent(obs):
+        me, zone = obs["self"], obs["zone"]
+        remaining = math.dist(me["pos"][:2], zone["next_center"]) - max(0, zone["next_radius"] - 8)
+        travel = 1.5 * remaining / max(1, me["stats"]["walk_speed"]) + 5
+        return not me["in_zone"] or (remaining > 0 and obs["t"] + travel >= zone["shrink_end"])
+
     def movement(self, obs, target):
         me = obs["self"]
         zone = obs["zone"]
         x, y = me["pos"][:2]
         now = obs["t"]
         zone_dx, zone_dy = zone["next_center"][0] - x, zone["next_center"][1] - y
-        remaining = math.hypot(zone_dx, zone_dy) - max(0.0, zone["next_radius"] - 8)
-        urgent = not me["in_zone"] or (
-            remaining > 0 and now + 1.5 * remaining / max(1, me["stats"]["walk_speed"]) + 5 >= zone["shrink_end"]
-        )
-        if urgent:
+        if self.zone_urgent(obs):
             move = direction(zone_dx, zone_dy)
         elif target:
             dx, dy = target["pos"][0] - x, target["pos"][1] - y
