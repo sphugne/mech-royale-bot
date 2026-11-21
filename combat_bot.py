@@ -23,6 +23,7 @@ def gun_aim(origin, target, speed):
 
 class Bot:
     name = "combat-py"
+    strafe_interval = 1.25
 
     def __init__(self, hello):
         self.pickup_radius = hello["config"]["loot"]["pickup_radius"]
@@ -51,7 +52,7 @@ class Bot:
             dx, dy = target["pos"][0] - x, target["pos"][1] - y
             distance = math.hypot(dx, dy)
             forward_x, forward_y = direction(dx, dy)
-            if now - self.last_turn > 1.25:
+            if now - self.last_turn > self.strafe_interval:
                 self.side *= -1
                 self.last_turn = now
             desired_range = 65 if me["hp"] > 0.45 * me["max_hp"] else 95
