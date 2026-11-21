@@ -18,4 +18,6 @@ The isolation variant uses the same urgency check for zone travel and dodging. A
 
 The corrected isolation bot passed all 300 observations locally and in Docker and scored 2.06 in practice.
 
-`navigation_bot.py` resumes zone or cube travel when no opponent has a clear shot, while still checking whether to stay behind cover during a reload. Jump-and-jet recovery probes the direction that actually stalled and yields to a sharp dodge or detour. It rechecks the current zone edge and urgent progress toward the next circle before starting or continuing a climb. The Dockerfile launches this variant.
+`navigation_bot.py` resumes zone or cube travel when no opponent has a clear shot, while preserving reload cover. Its jump-and-jet recovery checks the stalled heading and both zone constraints. It scored 2.08 in practice.
+
+`recovery_bot.py` looks for safe rear firing angles in isolated fights. It disengages below 50% HP or earlier if its remaining HP and recent incoming damage suggest it may die before reaching cover. It holds fire until fully healed. The estimate uses two seconds of non-zone damage and checks reachable cover 3, 5, and 10 m away. If no nearby route blocks all known firing lines, it uses a three-second planning window. Urgent zone travel takes priority. The Dockerfile launches this variant.
