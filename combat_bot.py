@@ -93,13 +93,16 @@ class Bot:
         self.last_move = move
         return move
 
+    def select_target(self, me, muzzle, enemies):
+        return min(enemies, key=lambda enemy: math.dist(me["pos"], enemy["pos"]), default=None)
+
     def act(self, obs):
         me = obs["self"]
         x, y, z = me["pos"]
         gun, secondary = me["weapons"]
         muzzle = (x, y, z + me["stats"].get("muzzle_height", 7))
         enemies = [enemy for enemy in obs["mechs"] if enemy["kind"] == "mech"]
-        target = min(enemies, key=lambda enemy: math.dist(me["pos"], enemy["pos"]), default=None)
+        target = self.select_target(me, muzzle, enemies)
         distance = math.dist(me["pos"], target["pos"]) if target else math.inf
         move = self.movement(obs, target)
         action = {
