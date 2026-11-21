@@ -155,10 +155,13 @@ class Bot:
 
         action["aim"] = (aim_yaw, aim_pitch)
         action["fire"] = [
-            distance <= gun_range and self.aligned(me["aim"], gun_yaw, gun_pitch, distance),
+            distance <= gun_range and self.gun_trigger(me, target, muzzle, (gun_yaw, gun_pitch), action["aim"], distance),
             fire_secondary,
         ]
         return action
+
+    def gun_trigger(self, me, target, muzzle, lead, command, distance):
+        return self.aligned(me["aim"], *lead, distance)
 
     @staticmethod
     def aligned(actual, yaw, pitch, distance):

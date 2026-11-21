@@ -3,4 +3,4 @@
 FROM python:3.13-slim
 WORKDIR /bot
 COPY . .
-ENTRYPOINT ["python3", "-u", "/bot/rear_angle_bot.py"]
+ENTRYPOINT ["python3", "-u", "/bot/duel_bot.py"]
