@@ -12,7 +12,7 @@ The first experiment tests whether starting toward the next safe zone based on t
 
 `evasion_bot.py` tests irregular strafing and movement in response to incoming projectiles and laser charges. It scored 1.96 in practice.
 
-`isolation_bot.py` commits to exposed targets, seeks cover against multiple opponents, and closes into lightning range in isolated fights. `mechfight.py` handles the game protocol, and `Dockerfile` launches the isolation variant for the scorer.
+`isolation_bot.py` commits to exposed targets, seeks cover against multiple opponents, and closes into lightning range in isolated fights. `mechfight.py` handles the game protocol.
 
 The isolation variant uses the same urgency check for zone travel and dodging. A dodge must preserve urgent zone progress and avoid increasing predicted enemy exposure. During a gun reload, the bot keeps its planned shelter move unless lightning is ready and the target is already in range.
 
@@ -20,4 +20,6 @@ The corrected isolation bot passed all 300 observations locally and in Docker an
 
 `navigation_bot.py` resumes zone or cube travel when no opponent has a clear shot, while preserving reload cover. Its jump-and-jet recovery checks the stalled heading and both zone constraints. It scored 2.08 in practice.
 
-`recovery_bot.py` looks for safe rear firing angles in isolated fights. It disengages below 50% HP or earlier if its remaining HP and recent incoming damage suggest it may die before reaching cover. It holds fire until fully healed. The estimate uses two seconds of non-zone damage and checks reachable cover 3, 5, and 10 m away. If no nearby route blocks all known firing lines, it uses a three-second planning window. Urgent zone travel takes priority. The Dockerfile launches this variant.
+`recovery_bot.py` looks for safe rear firing angles in isolated fights. It disengages below 50% HP or earlier if its remaining HP and recent incoming damage suggest it may die before reaching cover. It holds fire until fully healed. The estimate uses two seconds of non-zone damage and checks reachable cover 3, 5, and 10 m away. If no nearby route blocks all known firing lines, it uses a three-second planning window. Urgent zone travel takes priority. This combined experiment scored 1.73 in practice.
+
+`rear_angle_bot.py` tests rear-angle positioning on top of the 2.08 navigation bot while using its normal firing rules. The Dockerfile launches this variant.
