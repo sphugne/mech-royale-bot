@@ -16,4 +16,6 @@ The first experiment tests whether starting toward the next safe zone based on t
 
 The isolation variant uses the same urgency check for zone travel and dodging. A dodge must preserve urgent zone progress and avoid increasing predicted enemy exposure. During a gun reload, the bot keeps its planned shelter move unless lightning is ready and the target is already in range.
 
-The corrected bot passed all 300 observations in the official conformance checker locally and in Docker. Its practice score is pending.
+The corrected isolation bot passed all 300 observations locally and in Docker and scored 2.06 in practice.
+
+`navigation_bot.py` resumes zone or cube travel when no opponent has a clear shot, while still checking whether to stay behind cover during a reload. Jump-and-jet recovery probes the direction that actually stalled and yields to a sharp dodge or detour. It rechecks the current zone edge and urgent progress toward the next circle before starting or continuing a climb. The Dockerfile launches this variant.

@@ -118,8 +118,11 @@ class Bot(CombatBot):
                 return enemy
         return ordered[0] if ordered else None
 
+    def pursuit_target(self, target):
+        return target
+
     def movement(self, obs, target):
-        move = super().movement(obs, target)
+        move = super().movement(obs, self.pursuit_target(target))
         if self.protect_zone_progress and self.zone_urgent(obs):
             return move
         me, zone = obs["self"], obs["zone"]
