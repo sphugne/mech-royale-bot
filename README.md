@@ -24,4 +24,6 @@ The corrected isolation bot passed all 300 observations locally and in Docker an
 
 `rear_angle_bot.py` tests rear-angle positioning on top of the 2.08 navigation bot and scored 2.13 in practice.
 
-`duel_bot.py` tests a gun trigger that estimates torso aim when a shot can leave and uses the target's hitbox size. The Dockerfile launches this variant.
+`duel_bot.py` tests a gun trigger that estimates torso aim when a shot can leave and uses the target's hitbox size. It scored 2.19 in practice.
+
+`choke_bot.py` tests nearby firing positions with a walkable reload shelter. It checks that the intended opponent is the only known opponent with a firing line along the sampled route. The Dockerfile launches this variant.
